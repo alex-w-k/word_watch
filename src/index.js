@@ -13,7 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = $('textarea').val()
     const words = input.split(" ")
     countWords(words)
+    sendWords(words)
   })
+
+  function sendWords(words) {
+    words.forEach(function(word) {
+      var fixedWord = word.replace(/['"]+/g, '')
+      $.post(`${url}words`, {word: { value: fixedWord } })
+    })
+  }
 
   function countWords(words) {
     const count = {}
@@ -39,6 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function appendToDom(word) {
     $('.word-count').append(`<span style=font-size:${word[1]}em>${word[0]}</span>`)
   }
+
+  
 
 
 
