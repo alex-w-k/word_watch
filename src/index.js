@@ -11,15 +11,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $('button').on('click', function() {
     const input = $('textarea').val()
-    const words = input.split(" ")
+    const words = input.split(/\s+/)
     countWords(words)
     sendWords(words)
   })
 
+  $('textarea').keypress(function(key){
+    if (key.which == 13 && !key.shiftKey) {
+      event.preventDefault()
+      const input = $('textarea').val()
+      const words = input.split(/\s+/)
+      countWords(words)
+      sendWords(words)
+    }
+  })
+
+
   function sendWords(words) {
     words.forEach(function(word) {
-      var fixedWord = word.replace(/['"]+/g, '')
-      $.post(`${url}words`, {word: { value: fixedWord } })
+      debugger
+      $.post(`${url}words`, {word: { value: word } })
     })
   }
 
@@ -45,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function appendToDom(word) {
+    $('.word-count').empty()
     $('.word-count').append(`<span style=font-size:${word[1]}em>${word[0]}</span>`)
   }
 
@@ -55,4 +67,3 @@ document.addEventListener("DOMContentLoaded", () => {
   
  
 })
-
