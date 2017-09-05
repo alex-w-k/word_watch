@@ -16,6 +16,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-register": "^6.24.1",
     "chai": "^4.0.2",
+    "jquery": "^3.1.1",
     "css-loader": "^0.28.4",
     "jsdom": "^11.1.0",
     "mocha": "^3.4.2",
