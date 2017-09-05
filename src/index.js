@@ -12,8 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
   $('button').on('click', function() {
     const input = $('textarea').val()
     const words = input.split(/\s+/)
-    countWords(words)
-    sendWords(words)
+    const cleanWords = cleanArray(words)
+    debugger
+    countWords(cleanWords)
+    sendWords(cleanWords)
   })
 
   $('textarea').keypress(function(key){
@@ -21,10 +23,21 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault()
       const input = $('textarea').val()
       const words = input.split(/\s+/)
-      countWords(words)
-      sendWords(words)
+      const cleanWords = cleanArray(words)
+      countWords(cleanWords)
+      sendWords(cleanWords)
     }
   })
+
+  function cleanArray(actual) {
+    var newArray = new Array()
+    for (var i = 0; i < actual.length; i++) {
+      if (actual[i]) {
+        newArray.push(actual[i])
+      }
+    }
+    return newArray
+  }
 
 
   function sendWords(words) {
