@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function sendWords(words) {
     words.forEach(function(word) {
-      debugger
       $.post(`${url}words`, {word: { value: word } })
     })
   }
