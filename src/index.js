@@ -31,8 +31,8 @@ function getWords() {
 }
 
 function cleanArray(actual) {
-  var newArray = new Array()
-  for (var i = 0; i < actual.length; i++) {
+  let newArray = new Array()
+  for (let i = 0; i < actual.length; i++) {
     if (actual[i]) {
       newArray.push(actual[i])
     }
@@ -49,20 +49,20 @@ function sendWords(words) {
 
 function countWords(words) {
   const count = {}
-  for (var i = 0; i < words.length; i++) {
-    var num = words[i].toLowerCase()
+  words.forEach(function(word) {
+    let num = word.toLowerCase()
     count[num] = count[num] ? count[num] + 1 : 1
-  }
+  })
   reformatForDom(count)
 }
 
 function reformatForDom(count) {
   const countKeys = Object.keys(count)
   const countedWords = []
-  var i
-  for (i in countKeys){
-      countedWords.push([countKeys[i], count[countKeys[i]]])
-  }
+  let i
+  countKeys.forEach(function(key) {
+    countedWords.push([key, count[key]])
+  })
   $('.word-count').empty()
   countedWords.forEach(function(word) {
     appendToDom(word)
