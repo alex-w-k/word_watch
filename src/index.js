@@ -24,19 +24,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function getWords() {
   const input = $('textarea').val()
-  const words = input.split(/\s+/)
+  const words = input.split(/[ :;!?,-.\]\[\n)(]+/)
   const cleanWords = cleanArray(words)
   countWords(cleanWords)
   sendWords(cleanWords)
+  refreshTopWord()
 }
 
 function cleanArray(actual) {
   let newArray = new Array()
-  for (let i = 0; i < actual.length; i++) {
-    if (actual[i]) {
-      newArray.push(actual[i])
+  actual.forEach(function (item) {
+    if (item) {
+      newArray.push(item)
     }
-  }
+  })
   return newArray
 }
 
@@ -59,7 +60,6 @@ function countWords(words) {
 function reformatForDom(count) {
   const countKeys = Object.keys(count)
   const countedWords = []
-  let i
   countKeys.forEach(function(key) {
     countedWords.push([key, count[key]])
   })
@@ -71,4 +71,12 @@ function reformatForDom(count) {
 
 function appendToDom(word) {
   $('.word-count').append(`<p style=font-size:${word[1]}em>${word[0]}</p><br>`)
+}
+
+function refreshTopWord() {
+  $.getJSON(`${url}top_word`, function(data) {
+    let word = Object.keys(data.word)[0]
+    let number = Object.values(data.word)[0]
+    $('h3').replaceWith(`<h3>Top word from Word Watch API: ${word} (${number})</h3>`)
+  })
 }
