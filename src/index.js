@@ -10,72 +10,65 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   $('button').on('click', function() {
-    const input = $('textarea').val()
-    const words = input.split(/\s+/)
-    const cleanWords = cleanArray(words)
-    debugger
-    countWords(cleanWords)
-    sendWords(cleanWords)
+    getWords()
   })
 
   $('textarea').keypress(function(key){
     if (key.which == 13 && !key.shiftKey) {
       event.preventDefault()
-      const input = $('textarea').val()
-      const words = input.split(/\s+/)
-      const cleanWords = cleanArray(words)
-      countWords(cleanWords)
-      sendWords(cleanWords)
+      getWords()
     }
   })
 
-  function cleanArray(actual) {
-    var newArray = new Array()
-    for (var i = 0; i < actual.length; i++) {
-      if (actual[i]) {
-        newArray.push(actual[i])
-      }
-    }
-    return newArray
-  }
-
-
-  function sendWords(words) {
-    words.forEach(function(word) {
-      $.post(`${url}words`, {word: { value: word } })
-    })
-  }
-
-  function countWords(words) {
-    const count = {}
-    for (var i = 0; i < words.length; i++) {
-      var num = words[i].toLowerCase()
-      count[num] = count[num] ? count[num] + 1 : 1
-    }
-    reformatForDom(count)
-  }
-
-  function reformatForDom(count) {
-    const countKeys = Object.keys(count)
-    const countedWords = []
-    var i
-    for (i in countKeys){
-       countedWords.push([countKeys[i], count[countKeys[i]]]);
-    }
-    countedWords.forEach(function(word) {
-      appendToDom(word)
-    })
-  }
-
-  function appendToDom(word) {
-    $('.word-count').empty()
-    $('.word-count').append(`<span style=font-size:${word[1]}em>${word[0]}</span>`)
-  }
-
-  
-
-
-
-  
- 
 })
+
+function getWords() {
+  const input = $('textarea').val()
+  const words = input.split(/\s+/)
+  const cleanWords = cleanArray(words)
+  countWords(cleanWords)
+  sendWords(cleanWords)
+}
+
+function cleanArray(actual) {
+  var newArray = new Array()
+  for (var i = 0; i < actual.length; i++) {
+    if (actual[i]) {
+      newArray.push(actual[i])
+    }
+  }
+  return newArray
+}
+
+
+function sendWords(words) {
+  words.forEach(function(word) {
+    $.post(`${url}words`, {word: { value: word } })
+  })
+}
+
+function countWords(words) {
+  const count = {}
+  for (var i = 0; i < words.length; i++) {
+    var num = words[i].toLowerCase()
+    count[num] = count[num] ? count[num] + 1 : 1
+  }
+  reformatForDom(count)
+}
+
+function reformatForDom(count) {
+  const countKeys = Object.keys(count)
+  const countedWords = []
+  var i
+  for (i in countKeys){
+      countedWords.push([countKeys[i], count[countKeys[i]]])
+  }
+  $('.word-count').empty()
+  countedWords.forEach(function(word) {
+    appendToDom(word)
+  })
+}
+
+function appendToDom(word) {
+  $('.word-count').append(`<p style=font-size:${word[1]}em>${word[0]}</p><br>`)
+}
